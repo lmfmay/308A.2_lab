@@ -38,12 +38,52 @@ class Character {
 }
 
 //Now, re-create Robin using the Character class!
-const robin = new Character(`Robin`);
-robin.inventory = ["sword", "potion", "artifact"];
-robin.companion = new Character("Leo");
-robin.companion.type = "Cat";
-robin.companion.companion = new Character("Frank");
-robin.companion.companion.type = "Flea";
-robin.companion.companion.inventory = ["small hat", "sunglasses"];
+// const robin = new Character(`Robin`);
+// robin.inventory = ["sword", "potion", "artifact"];
+// robin.companion = new Character("Leo");
+// robin.companion.type = "Cat";
+// robin.companion.companion = new Character("Frank");
+// robin.companion.companion.type = "Flea";
+// robin.companion.companion.inventory = ["small hat", "sunglasses"];
 
-console.log(robin.companion.companion);
+//console.log(robin.companion.companion);
+
+//Part 3: Class Features
+class Adventurer extends Character {
+    constructor (name, role) {
+        super(name);
+        //Adventurer have specialized roles
+        this.role = role;
+        //Every adventurer starts with a bed and 50 gold coins
+        this.inventory.push(`bedroll`, `50 gold coins`);
+    }
+    //Adventurer have ability to scout ahead
+    scout () {
+        console.log(`${this.name} is scouting ahead...`);
+        super.roll();
+    }
+}
+
+class Companion extends Character {
+    constructor (name, ability, type) {
+        super(name);
+        //Characters have special abilities
+        this.ability = ability;
+        this.type = type;
+    }
+    mood(){
+        let mood = [`happy`, `sad`, `itchy`, `restless`, `hungry`, `sleepy`];
+        console.log(`${this.name} is feeling ${mood[Math.floor(Math.random() * mood.length)]}.`)
+    }
+}
+
+const frank = new Companion (`Frank`,`Healing`,`Flea`);
+frank.mood();
+
+const leo = new Companion (`Leo`,`Scratch`,`Cat`);
+leo.companion = frank;
+leo.mood();
+
+const robin = new Adventurer (`Robin`, `Mage`);
+robin.companion = leo;
+console.log(robin);
