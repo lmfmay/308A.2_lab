@@ -30,6 +30,8 @@ class Character {
         this.health = 100;
         this.inventory = [];
     }
+
+    static max_health = 100;
 //Every character should also be able to make rolls. Add the roll method to the Character class.
     roll (mod = 0) {
         const result = Math.floor(Math.random() * 20) + 1 + mod;
@@ -52,11 +54,21 @@ class Character {
 class Adventurer extends Character {
     constructor (name, role) {
         super(name);
+        // Check if the role matches one of the allowed roles
+        try {
+            if (!Adventurer.roles.includes(role)) {
+                throw new Error(`Invalid role: ${role}. Allowed roles are: ${Adventurer.roles.join(', ')}`);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+       
         //Adventurer have specialized roles
         this.role = role;
         //Every adventurer starts with a bed and 50 gold coins
         this.inventory.push(`bedroll`, `50 gold coins`);
     }
+    static roles = [`Fighter`,`Healer`,`Wizard`];
     //Adventurer have ability to scout ahead
     scout () {
         console.log(`${this.name} is scouting ahead...`);
@@ -84,6 +96,6 @@ const leo = new Companion (`Leo`,`Scratch`,`Cat`);
 leo.companion = frank;
 leo.mood();
 
-const robin = new Adventurer (`Robin`, `Mage`);
+const robin = new Adventurer (`Robin`, `Thief`);
 robin.companion = leo;
 console.log(robin);
